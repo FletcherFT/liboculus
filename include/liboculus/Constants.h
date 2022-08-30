@@ -46,6 +46,16 @@ namespace liboculus {
     const uint8_t PacketHeaderLSB = (OCULUS_CHECK_ID & 0x00FF);
     const uint8_t PacketHeaderMSB = (OCULUS_CHECK_ID & 0xFF00) >> 8;
 
+    namespace Oculus_750kHz {
+        const float ElevationBeamwidthDeg = 20.0;
+        const float ElevationBeamwidthRad = 20.0*M_PI/180.0;
+
+        const float AzimuthBeamwidthDeg = 0.6;
+        const float AzimuthBeamwidthRad = 0.6*M_PI/180.0;
+
+        const float MaxRange = 120;
+    }
+
     namespace Oculus_1200MHz {
         const float ElevationBeamwidthDeg = 20.0;
         const float ElevationBeamwidthRad = 20.0*M_PI/180.0;
