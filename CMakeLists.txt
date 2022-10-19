@@ -49,8 +49,10 @@ else()
   # == ROS / Catkin-specific section =================================
   project(liboculus)
 
+  add_compile_options(-std=c++14)
+
   find_package(catkin REQUIRED
-          #cmake_modules
+          roscpp
           g3log_ros )
 
   catkin_package(
@@ -58,11 +60,9 @@ else()
             INCLUDE_DIRS include thirdparty
             LIBRARIES liboculus_LIB )
 
-  add_compile_options(-std=c++14)
-
   include_directories(
-              include
-              thirdparty
+              include/
+              thirdparty/
               ${catkin_INCLUDE_DIRS} )
 
   set(oculus_SRCS
@@ -78,6 +78,12 @@ else()
 
   add_library(liboculus_LIB ${oculus_SRCS})
   target_link_libraries(liboculus_LIB ${catkin_LIBRARIES})
+
+  add_executable(oculus_client tools/oculus_client.cpp)
+  target_link_libraries(oculus_client ${catkin_LIBRARIES} liboculus_LIB)
+  add_dependencies(oculus_client
+  ${catkin_EXPORTED_TARGETS}
+)
 
   install(TARGETS liboculus_LIB
               ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

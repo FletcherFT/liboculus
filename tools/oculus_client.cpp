@@ -9,8 +9,9 @@ using std::string;
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
-#include <libg3logger/g3logger.h>
-#include <CLI/CLI.hpp>
+#include "g3log_ros/ROSLogSink.h"
+#include "g3log_ros/g3logger.h"
+#include <CLI11/CLI11.hpp>
 
 #include "liboculus/DataRx.h"
 #include "liboculus/StatusRx.h"
@@ -45,7 +46,8 @@ void signalHandler(int signo) {
 }
 
 int main(int argc, char **argv) {
-  libg3logger::G3Logger logger("ocClient");
+  
+  libg3logger::G3Logger<ROSLogSink> logger("ocClient");
 
   CLI::App app{"Simple Oculus Sonar app"};
 
@@ -218,6 +220,12 @@ int main(int argc, char **argv) {
 }
 
 
+template <typename Ping_t>
+  void pingCallback(const Ping_t &ping) {
+    std::cout << ping << std::endl;
+  }
+
+
 int playbackSonarFile(const std::string &filename, ofstream &output, int stopAfter) {
   shared_ptr<SonarPlayerBase> player(SonarPlayerBase::OpenFile(filename));
 
@@ -232,8 +240,10 @@ int playbackSonarFile(const std::string &filename, ofstream &output, int stopAft
   }
 
   int count = 0;
-  // SimplePingResult ping;
-  // while( player->nextPing(ping) && !player->eof() ) {
+  std::cout << player->isOpen() << std::endl;
+  bool what = player->nextPing();
+  // OculusSimplePingResult;
+  // while( player->nextPing() && !player->eof() ) {
   //   if (!ping.valid()) {
   //     LOG(WARNING) << "Invalid ping";
   //     continue;

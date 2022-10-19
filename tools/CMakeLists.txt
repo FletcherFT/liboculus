@@ -1,12 +1,6 @@
-fips_begin_app( oc_client cmdline )
-  fips_files(
-    oculus_client.cpp
-  )
+cmake_minimum_required(VERSION 3.5)
+project(liboculus)
 
-  fips_deps( oculus )
+add_executable(oculus_client oculus_client.cpp)
+target_link_libraries(oculus_client PRIVATE libg3logger liboculus)
 
-  fips_include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-  )
-
-fips_end_app()
